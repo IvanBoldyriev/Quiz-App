@@ -7,7 +7,7 @@ const [list, setList] = useState([]);
 function AddToDo(){
   setList([
     ...list,
-    newTodo
+    {text: newTodo, completed: false}
   ])
 };
 
@@ -21,13 +21,29 @@ function DeleteAll(){
   setList([]);
 }
 
+function ToggleCompleted(indexToChange){
+  setList(
+    list.map((line,index) => {
+      if(indexToChange === index){
+        return {...line, completed: !line.completed}
+      }
+      return line;
+    })
+  );
+}
+
 function List(){
   return(
     list.map((line,index) => {
       return (
       <div key = {index}>
-        <li>{line}</li>
-        <button onClick={()=> DeleteToDo(index)}>Удалить</button>
+        <li>
+          <button onClick={() => {ToggleCompleted(index)}}>
+            {line.completed ? '✅' : '❌'}
+          </button>
+          {line.text}
+          <button onClick={()=> DeleteToDo(index)}>Удалить</button>
+      </li>
       </div>
     )
     })
